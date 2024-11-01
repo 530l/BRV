@@ -22,7 +22,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:paddingLeft="20dp"
-                android:text="单一的数据类型集合通过判断字段构建出多类型列表"
+                android:text="add"
                 android:textColor="@color/textSecond"
                 android:textSize="12dp" />
             <TextView
@@ -33,7 +33,19 @@
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:paddingLeft="20dp"
-                android:text="单一的数据类型集合通过判断字段构建出多类型列表"
+                android:text="update"
+                android:textColor="@color/textSecond"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/title_tv3"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:background="@color/black"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:paddingLeft="20dp"
+                android:text="remvo"
                 android:textColor="@color/textSecond"
                 android:textSize="12dp" />
         </LinearLayout>

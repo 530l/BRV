@@ -23,8 +23,6 @@ class OneMoreTypeFragment :
         repeat(2) {
             list.add(OneMoreModel1(it, 3, "-q--$it"))
         }
-        list.add(OneMoreModel1(-1, 1, "head"))
-        list.add(OneMoreModel1(-2, 2, "foot"))
         binding.rv.linear().setup {
             addType<OneMoreModel1> {
                 when (type) {
@@ -65,11 +63,31 @@ class OneMoreTypeFragment :
 //            binding.rv.bindingAdapter.addFooter(OneMoreModel1(-2,2, "foot"))
 //        }
 
+        binding.rv.run {
+            list.add(0, OneMoreModel1(-1, 1, "head"))
+            list.add(list.size - 1, OneMoreModel1(-2, 2, "foot"))
+            binding.rv.setDifferModels(newModels = list)
+        }
+
+        binding.titleTv3.setOnClickListener {
+            val newList = list.toMutableList().apply {
+                //删除
+                filter { it.id > 0 }.forEach { //todo 但是需要注意头尾。
+                    remove(it)
+                }
+            }
+            binding.rv.setDifferModels(newModels = newList)
+            list = newList
+        }
+
         binding.titleTv2.setOnClickListener {
             val newList = list.toMutableList().apply {
-                //更新
-//                this[0] = this[0].copy(txt = "改名后的小帅哥$ids")
-                this[0] = filter { it.id == 0 }[0].copy(txt = "改名后的小帅哥$ids")
+                //todo 这种方式直接通过索引。但是需要注意头尾。
+                //this[0] = this[0].copy(txt = "改名后的小帅哥$ids")
+                //todo 这种方式是通过遍历id删除。但是需要注意头尾。
+                val b = filter { it.id == 0 }[0]
+                val i = indexOf(b)
+                this[i] = b.copy(txt = "改名后的小帅哥$ids")
             }
             binding.rv.setDifferModels(newModels = newList)
             list = newList
@@ -78,10 +96,16 @@ class OneMoreTypeFragment :
 
         binding.titleTv.setOnClickListener {
             val newList = list.toMutableList().apply {
-                //删除
-                //removeAt(2)
                 //新增
-                add(list.size - 1, OneMoreModel1(ids++, 1, "新增$ids"))
+                // 检查列表是否至少有两个元素
+                if (size >= 2) {
+                    // 将新项添加到倒数第二个位置
+                    add(list.size - 1, OneMoreModel1(ids++, 1, "新增$ids"))
+                } else {
+                    // 如果列表少于两个元素，直接添加到列表末尾
+                    add(list.size - 1, OneMoreModel1(ids++, 1, "新增$ids"))
+                }
+
             }
 
             binding.rv.setDifferModels(newModels = newList)
