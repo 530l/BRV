@@ -71,8 +71,9 @@ class OneMoreTypeFragment :
 
         binding.titleTv3.setOnClickListener {
             val newList = list.toMutableList().apply {
+                //removeAt(1) //todo 但是需要注意头尾。
                 //删除
-                filter { it.id > 0 }.forEach { //todo 但是需要注意头尾。
+                filter { it.id > 0 }.forEach {
                     remove(it)
                 }
             }
