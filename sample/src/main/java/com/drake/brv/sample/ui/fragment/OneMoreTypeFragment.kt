@@ -1,5 +1,6 @@
 package com.drake.brv.sample.ui.fragment
 
+import androidx.lifecycle.lifecycleScope
 import com.drake.brv.listener.ItemDifferCallback
 import com.drake.brv.sample.R
 import com.drake.brv.sample.databinding.FragmentOneMoreTypeBinding
@@ -13,6 +14,8 @@ import com.drake.brv.utils.linear
 import com.drake.brv.utils.setDifferModels
 import com.drake.brv.utils.setup
 import com.drake.engine.base.EngineFragment
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class OneMoreTypeFragment :
@@ -56,6 +59,9 @@ class OneMoreTypeFragment :
 
         }.models = list
 
+        //todo 目数据对比默认使用`equals`函数对比,
+        //     你可以为数据手动实现equals函数来修改对比逻辑.
+        //     推荐定义数据为 data class, 因其会根据构造参数自动生成equals
 
         //todo 如果用这种方法添加头部，则存在问题？索引
 //        binding.rv.run {
@@ -79,6 +85,26 @@ class OneMoreTypeFragment :
             }
             binding.rv.setDifferModels(newModels = newList)
             list = newList
+        }
+        //todo setDifferModels 每次传入的都是新对象，新旧对比
+        binding.titleTv4.setOnClickListener {
+            //列表清空
+            val newList = mutableListOf<OneMoreModel1>()
+            binding.rv.setDifferModels(newList)
+            list = newList
+            ids = 0
+            //重新新增。
+            lifecycleScope.launch {
+                delay(2000)
+                val newList2 = mutableListOf<OneMoreModel1>()
+                repeat(5) {
+                    newList2.add(OneMoreModel1(it, 3, "-q--$it"))
+                }
+                newList2.add(0, OneMoreModel1(-1, 1, "head"))
+                newList2.add(newList2.size, OneMoreModel1(-2, 2, "foot"))
+                binding.rv.setDifferModels(newModels = newList2)
+                list = newList2
+            }
         }
 
         binding.titleTv2.setOnClickListener {
@@ -113,10 +139,6 @@ class OneMoreTypeFragment :
             list = newList
         }
 
-
-        //列表清空
-        //list.clear()
-        //binding.rv.setDifferModels(list)
 
     }
 
