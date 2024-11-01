@@ -1,5 +1,6 @@
 package com.drake.brv.sample.ui.fragment
 
+import com.drake.brv.listener.ItemDifferCallback
 import com.drake.brv.sample.R
 import com.drake.brv.sample.databinding.FragmentOneMoreTypeBinding
 import com.drake.brv.sample.databinding.ItemOneMore1Binding
@@ -17,11 +18,13 @@ import com.drake.engine.base.EngineFragment
 class OneMoreTypeFragment :
     EngineFragment<FragmentOneMoreTypeBinding>(R.layout.fragment_one_more_type) {
 
-    val list: MutableList<OneMoreModel1> = mutableListOf()
+    var list: MutableList<OneMoreModel1> = mutableListOf()
     override fun initView() {
-        repeat(3) {
-            list.add(OneMoreModel1(3, "-q--$it"))
+        repeat(2) {
+            list.add(OneMoreModel1(it, 3, "-q--$it"))
         }
+        list.add(OneMoreModel1(-1, 1, "head"))
+        list.add(OneMoreModel1(-2, 2, "foot"))
         binding.rv.linear().setup {
             addType<OneMoreModel1> {
                 when (type) {
@@ -51,25 +54,48 @@ class OneMoreTypeFragment :
                     }
                 }
             }
+
+
         }.models = list
 
-        binding.rv.run {
-            binding.rv.bindingAdapter.addHeader(OneMoreModel1(1, "head"))
-            binding.rv.bindingAdapter.addFooter(OneMoreModel1(2, "foot"))
-        }
 
+        //todo 如果用这种方法添加头部，则存在问题？索引
+//        binding.rv.run {
+//            binding.rv.bindingAdapter.addHeader(OneMoreModel1(-1,1, "head"))
+//            binding.rv.bindingAdapter.addFooter(OneMoreModel1(-2,2, "foot"))
+//        }
+
+        binding.titleTv2.setOnClickListener {
+            val newList = list.toMutableList().apply {
+                //更新
+//                this[0] = this[0].copy(txt = "改名后的小帅哥$ids")
+                this[0] = filter { it.id == 0 }[0].copy(txt = "改名后的小帅哥$ids")
+            }
+            binding.rv.setDifferModels(newModels = newList)
+            list = newList
+
+        }
 
         binding.titleTv.setOnClickListener {
-            val newList = mutableListOf<OneMoreModel1>()
-            newList.addAll(list)
-            newList.add(OneMoreModel1(3, "-q--99999"))
+            val newList = list.toMutableList().apply {
+                //删除
+                //removeAt(2)
+                //新增
+                add(list.size - 1, OneMoreModel1(ids++, 1, "新增$ids"))
+            }
+
             binding.rv.setDifferModels(newModels = newList)
-            list.clear()
-            list.addAll(newList)
+            list = newList
         }
+
+
+        //列表清空
+        //list.clear()
+        //binding.rv.setDifferModels(list)
 
     }
 
+    var ids = 99
 
     override fun initData() {
     }

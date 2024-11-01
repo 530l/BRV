@@ -26,7 +26,8 @@ package com.drake.brv.listener
 import androidx.recyclerview.widget.RecyclerView
 
 /**
- * 数据对比默认使用`equals`函数对比, 你可以为数据手动实现equals函数来修改对比逻辑. 推荐定义数据为 data class, 因其会根据构造参数自动生成equals
+ * 数据对比默认使用`equals`函数对比,
+ * 你可以为数据手动实现equals函数来修改对比逻辑. 推荐定义数据为 data class, 因其会根据构造参数自动生成equals
  */
 interface ItemDifferCallback {
 
