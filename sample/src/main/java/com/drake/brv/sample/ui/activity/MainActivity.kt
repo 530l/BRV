@@ -34,6 +34,8 @@ class MainActivity : EngineActivity<ActivityMainBinding>(R.layout.activity_main)
         }
 
         binding.navView.setupWithNavController(navController)
+
+        navController.navigate(R.id.oneMoreTypeFragment)
     }
 
     override fun initData() {
