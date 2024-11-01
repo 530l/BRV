@@ -70,9 +70,12 @@ class OneMoreTypeFragment :
 //        }
 
         binding.rv.run {
-            list.add(0, OneMoreModel1(-1, 1, "head"))
-            list.add(list.size - 1, OneMoreModel1(-2, 2, "foot"))
-            binding.rv.setDifferModels(newModels = list)
+            val newList = list.toMutableList().apply {
+                add(0, OneMoreModel1(-1, 1, "head"))
+                add(OneMoreModel1(-2, 2, "foot"))
+            }
+            binding.rv.setDifferModels(newModels = newList)
+            list = newList
         }
 
         binding.titleTv3.setOnClickListener {
@@ -101,7 +104,7 @@ class OneMoreTypeFragment :
                     newList2.add(OneMoreModel1(it, 3, "-q--$it"))
                 }
                 newList2.add(0, OneMoreModel1(-1, 1, "head"))
-                newList2.add(newList2.size, OneMoreModel1(-2, 2, "foot"))
+                newList2.add(OneMoreModel1(-2, 2, "foot"))
                 binding.rv.setDifferModels(newModels = newList2)
                 list = newList2
             }
