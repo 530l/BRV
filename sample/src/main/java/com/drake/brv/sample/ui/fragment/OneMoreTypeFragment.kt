@@ -24,7 +24,7 @@ class OneMoreTypeFragment :
 
     var list: MutableList<OneMoreModel1> = mutableListOf()
     override fun initView() {
-        repeat(1) {
+        repeat(2) {
             list.add(OneMoreModel1(it, 3, "-q--$it"))
         }
         binding.rv.linear().setup {
@@ -37,28 +37,29 @@ class OneMoreTypeFragment :
             }
 //            addHeader(OneMoreModel1(-1,1, "head"))
 //            addFooter(OneMoreModel1(-2,2, "foot"))
-            /*            itemDifferCallback = object : ItemDifferCallback {
-                            //判断两个项目是否是同一个项目，通常通过唯一标识符（如 ID）来比较。
-                            override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
-                                Log.i(
-                                    "ItemDifferCallback",
-                                    "areItemsTheSame  ${(oldItem as OneMoreModel1)}  ${(newItem as OneMoreModel1)}"
-                                )
-                                return oldItem.id == (newItem.id)
-                            }
-                            //判断两个项目的内容是否相同，通常需要比较所有相关字段。
-                            override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
-                                Log.i(
-                                    "ItemDifferCallback",
-                                    "areContentsTheSame  ${(oldItem as OneMoreModel1)}  ${(newItem as OneMoreModel1)}"
-                                )
-                                return oldItem == newItem
-                            }
-
-                            override fun getChangePayload(oldItem: Any, newItem: Any): Any? {
-                                return super.getChangePayload(oldItem, newItem)
-                            }
-                        }*/
+//            itemDifferCallback = object : ItemDifferCallback {
+//                //判断两个项目是否是同一个项目，通常通过唯一标识符（如 ID）来比较。
+//                override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
+//                    Log.i(
+//                        "ItemDifferCallback",
+//                        "areItemsTheSame  ${(oldItem as OneMoreModel1)}  ${(newItem as OneMoreModel1)}"
+//                    )
+//                    return oldItem.id == (newItem.id)
+//                }
+//
+//                //判断两个项目的内容是否相同，通常需要比较所有相关字段。
+//                override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
+//                    Log.i(
+//                        "ItemDifferCallback",
+//                        "areContentsTheSame  ${(oldItem as OneMoreModel1)}  ${(newItem as OneMoreModel1)}"
+//                    )
+//                    return oldItem == newItem
+//                }
+//
+//                override fun getChangePayload(oldItem: Any, newItem: Any): Any? {
+//                    return super.getChangePayload(oldItem, newItem)
+//                }
+//            }
             onBind {
                 when (itemViewType) {
                     R.layout.item_one_more1 -> {
@@ -99,11 +100,11 @@ class OneMoreTypeFragment :
 //        }
 
         binding.rv.run {
-            val newList = list.toMutableList().apply {}
-            newList.add(0, OneMoreModel1(-1, 1, "head"))
-            newList. add(OneMoreModel1(-2, 2, "foot"))
-            binding.rv.setDifferModels(newModels = newList)
-            list = newList
+//            val newList = list.toMutableList().apply {}
+//            newList.add(0, OneMoreModel1(-1, 1, "head"))
+//            newList.add(OneMoreModel1(-2, 2, "foot"))
+//            binding.rv.setDifferModels(newModels = newList)
+//            list = newList
         }
 
         binding.titleTv3.setOnClickListener {
@@ -165,9 +166,11 @@ class OneMoreTypeFragment :
                 }
 
             }
-
-            binding.rv.setDifferModels(newModels = newList)
-            list = newList
+//            val new[0]=this[0].copy(id=this[0].id, type = this[0].type, txt = "dsfsf")
+//        }
+//        binding.rv.setDifferModels(newModels = newList)
+//        list = newListList =  list.toMutableList().apply {
+                this
         }
 
 
