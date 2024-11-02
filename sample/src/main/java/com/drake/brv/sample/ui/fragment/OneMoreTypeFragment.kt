@@ -1,5 +1,6 @@
 package com.drake.brv.sample.ui.fragment
 
+import android.util.Log
 import androidx.lifecycle.lifecycleScope
 import com.drake.brv.listener.ItemDifferCallback
 import com.drake.brv.sample.R
@@ -34,6 +35,28 @@ class OneMoreTypeFragment :
                     else -> R.layout.item_one_more3
                 }
             }
+//            itemDifferCallback = object : ItemDifferCallback {
+//                //判断两个项目是否是同一个项目，通常通过唯一标识符（如 ID）来比较。
+//                override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
+//                    Log.i(
+//                        "ItemDifferCallback",
+//                        "areItemsTheSame  ${(oldItem as OneMoreModel1)}  ${(newItem as OneMoreModel1)}"
+//                    )
+//                    return oldItem.id == (newItem.id)
+//                }
+//                //判断两个项目的内容是否相同，通常需要比较所有相关字段。
+//                override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
+//                    Log.i(
+//                        "ItemDifferCallback",
+//                        "areContentsTheSame  ${(oldItem as OneMoreModel1)}  ${(newItem as OneMoreModel1)}"
+//                    )
+//                    return oldItem == newItem
+//                }
+//
+//                override fun getChangePayload(oldItem: Any, newItem: Any): Any? {
+//                    return super.getChangePayload(oldItem, newItem)
+//                }
+//            }
             onBind {
                 when (itemViewType) {
                     R.layout.item_one_more1 -> {
@@ -70,10 +93,9 @@ class OneMoreTypeFragment :
 //        }
 
         binding.rv.run {
-            val newList = list.toMutableList().apply {
-                add(0, OneMoreModel1(-1, 1, "head"))
-                add(OneMoreModel1(-2, 2, "foot"))
-            }
+            val newList = list.toMutableList().apply {}
+            newList.add(0, OneMoreModel1(-1, 1, "head"))
+            newList. add(OneMoreModel1(-2, 2, "foot"))
             binding.rv.setDifferModels(newModels = newList)
             list = newList
         }
@@ -130,10 +152,10 @@ class OneMoreTypeFragment :
                 // 检查列表是否至少有两个元素
                 if (size >= 2) {
                     // 将新项添加到倒数第二个位置
-                    add(list.size - 1, OneMoreModel1(ids++, 1, "新增$ids"))
+                    add(list.size - 1, OneMoreModel1(ids, 3, "新增$ids"))
                 } else {
                     // 如果列表少于两个元素，直接添加到列表末尾
-                    add(list.size - 1, OneMoreModel1(ids++, 1, "新增$ids"))
+                    add(list.size - 1, OneMoreModel1(ids, 3, "新增$ids"))
                 }
 
             }
