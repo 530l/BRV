@@ -24,7 +24,7 @@ class OneMoreTypeFragment :
 
     var list: MutableList<OneMoreModel1> = mutableListOf()
     override fun initView() {
-        repeat(2) {
+        repeat(1) {
             list.add(OneMoreModel1(it, 3, "-q--$it"))
         }
         binding.rv.linear().setup {
@@ -35,28 +35,30 @@ class OneMoreTypeFragment :
                     else -> R.layout.item_one_more3
                 }
             }
-//            itemDifferCallback = object : ItemDifferCallback {
-//                //判断两个项目是否是同一个项目，通常通过唯一标识符（如 ID）来比较。
-//                override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
-//                    Log.i(
-//                        "ItemDifferCallback",
-//                        "areItemsTheSame  ${(oldItem as OneMoreModel1)}  ${(newItem as OneMoreModel1)}"
-//                    )
-//                    return oldItem.id == (newItem.id)
-//                }
-//                //判断两个项目的内容是否相同，通常需要比较所有相关字段。
-//                override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
-//                    Log.i(
-//                        "ItemDifferCallback",
-//                        "areContentsTheSame  ${(oldItem as OneMoreModel1)}  ${(newItem as OneMoreModel1)}"
-//                    )
-//                    return oldItem == newItem
-//                }
-//
-//                override fun getChangePayload(oldItem: Any, newItem: Any): Any? {
-//                    return super.getChangePayload(oldItem, newItem)
-//                }
-//            }
+//            addHeader(OneMoreModel1(-1,1, "head"))
+//            addFooter(OneMoreModel1(-2,2, "foot"))
+            /*            itemDifferCallback = object : ItemDifferCallback {
+                            //判断两个项目是否是同一个项目，通常通过唯一标识符（如 ID）来比较。
+                            override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
+                                Log.i(
+                                    "ItemDifferCallback",
+                                    "areItemsTheSame  ${(oldItem as OneMoreModel1)}  ${(newItem as OneMoreModel1)}"
+                                )
+                                return oldItem.id == (newItem.id)
+                            }
+                            //判断两个项目的内容是否相同，通常需要比较所有相关字段。
+                            override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
+                                Log.i(
+                                    "ItemDifferCallback",
+                                    "areContentsTheSame  ${(oldItem as OneMoreModel1)}  ${(newItem as OneMoreModel1)}"
+                                )
+                                return oldItem == newItem
+                            }
+
+                            override fun getChangePayload(oldItem: Any, newItem: Any): Any? {
+                                return super.getChangePayload(oldItem, newItem)
+                            }
+                        }*/
             onBind {
                 when (itemViewType) {
                     R.layout.item_one_more1 -> {
@@ -77,6 +79,10 @@ class OneMoreTypeFragment :
                         }
                     }
                 }
+            }
+
+            onPayload {
+
             }
 
 
