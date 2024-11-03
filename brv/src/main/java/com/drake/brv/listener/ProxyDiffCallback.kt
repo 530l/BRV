@@ -74,6 +74,7 @@ internal class ProxyDiffCallback(
     }
 
     override fun getChangePayload(oldItemPosition: Int, newItemPosition: Int): Any? {
+        //todo 语法糖，把符号结果的返回，return在第一位,如果没有重写callback，就拿默认的规则
         return if (oldModels == null || newModels == null) {
             null
         } else {

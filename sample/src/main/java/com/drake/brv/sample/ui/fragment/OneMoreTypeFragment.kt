@@ -24,11 +24,13 @@ import kotlinx.coroutines.launch
 
 class OneMoreTypeFragment :
     EngineFragment<FragmentOneMoreTypeBinding>(R.layout.fragment_one_more_type) {
-
+    //在 Kotlin 中，如果属性的类型是一个类，并且该类有无参构造函数，那么在属性声明中可以省略括号 ().
+    // var testItemDifferCallback: TestItemDifferCallback = TestItemDifferCallback()
+     // 等价于下面
     var testItemDifferCallback: TestItemDifferCallback = TestItemDifferCallback
     var list: MutableList<OneMoreModel1> = mutableListOf()
     override fun initView() {
-        testItemDifferCallback.areItemsTheSame(1,1)
+        testItemDifferCallback.areItemsTheSame(1, 1)
         repeat(2) {
             list.add(OneMoreModel1(it, 3, "-q--$it"))
         }
@@ -95,12 +97,12 @@ class OneMoreTypeFragment :
             }
 
             onPayload {
-                Log.i("onPayload",it.toString()+"type $itemViewType")
+                Log.i("onPayload", it.toString() + "type $itemViewType")
                 when (itemViewType) {
                     else -> {
                         getBinding<ItemOneMore3Binding>().apply {
-                            if (it.isNotEmpty()){
-                                item.text = (it[0]as OneMoreModel1).txt
+                            if (it.isNotEmpty()) {
+                                item.text = (it[0] as OneMoreModel1).txt
                             }
                         }
                     }
