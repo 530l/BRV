@@ -86,4 +86,7 @@ dependencies {
     // debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.12'
 
     implementation project(":brv")
+
+//    implementation "org.jetbrains.kotlin:kotlin-reflect:1.9.22"
+
 }

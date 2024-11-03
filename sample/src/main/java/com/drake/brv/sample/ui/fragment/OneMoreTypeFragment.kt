@@ -1,18 +1,23 @@
 package com.drake.brv.sample.ui.fragment
 
+import android.util.Log
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
+import com.drake.brv.listener.ItemDifferCallback
 import com.drake.brv.sample.R
 import com.drake.brv.sample.databinding.FragmentOneMoreTypeBinding
 import com.drake.brv.sample.databinding.ItemOneMore1Binding
 import com.drake.brv.sample.databinding.ItemOneMore2Binding
 import com.drake.brv.sample.databinding.ItemOneMore3Binding
 import com.drake.brv.sample.model.OneMoreModel1
+import com.drake.brv.sample.utils.TestItemDifferCallback
 import com.drake.brv.utils.bindingAdapter
+import com.drake.brv.utils.grid
 import com.drake.brv.utils.linear
 import com.drake.brv.utils.setDifferModels
 import com.drake.brv.utils.setup
 import com.drake.engine.base.EngineFragment
+import com.drake.tooltip.toast
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -20,12 +25,14 @@ import kotlinx.coroutines.launch
 class OneMoreTypeFragment :
     EngineFragment<FragmentOneMoreTypeBinding>(R.layout.fragment_one_more_type) {
 
+    var testItemDifferCallback: TestItemDifferCallback = TestItemDifferCallback
     var list: MutableList<OneMoreModel1> = mutableListOf()
     override fun initView() {
+        testItemDifferCallback.areItemsTheSame(1,1)
         repeat(2) {
             list.add(OneMoreModel1(it, 3, "-q--$it"))
         }
-        binding.rv.linear().setup {
+        binding.rv.grid(3).setup {
             addType<OneMoreModel1> {
                 when (type) {
                     1 -> R.layout.item_one_more1
@@ -35,29 +42,36 @@ class OneMoreTypeFragment :
             }
 //            addHeader(OneMoreModel1(-1,1, "head"))
 //            addFooter(OneMoreModel1(-2,2, "foot"))
-//            itemDifferCallback = object : ItemDifferCallback {
-//                //判断两个项目是否是同一个项目，通常通过唯一标识符（如 ID）来比较。
-//                override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
-//                    Log.i(
-//                        "ItemDifferCallback",
-//                        "areItemsTheSame  ${(oldItem as OneMoreModel1)}  ${(newItem as OneMoreModel1)}"
-//                    )
-//                    return oldItem.id == (newItem.id)
-//                }
-//
-//                //判断两个项目的内容是否相同，通常需要比较所有相关字段。
-//                override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
-//                    Log.i(
-//                        "ItemDifferCallback",
-//                        "areContentsTheSame  ${(oldItem as OneMoreModel1)}  ${(newItem as OneMoreModel1)}"
-//                    )
-//                    return oldItem == newItem
-//                }
-//
-//                override fun getChangePayload(oldItem: Any, newItem: Any): Any? {
-//                    return super.getChangePayload(oldItem, newItem)
-//                }
-//            }
+            itemDifferCallback = object : ItemDifferCallback {
+                //判断两个项目是否是同一个项目，通常通过唯一标识符（如 ID）来比较。
+                override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
+                    if (oldItem is OneMoreModel1 && newItem is OneMoreModel1) {
+                        return oldItem.id == newItem.id // 比较 id 字段
+                    }
+                    return false
+                }
+
+                //判断两个项目的内容是否相同，通常需要比较所有相关字段。
+                override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
+                    if (oldItem is OneMoreModel1 && newItem is OneMoreModel1) {
+                        return oldItem == newItem // 默认比较所有字段
+                    }
+                    return false
+                }
+
+                override fun getChangePayload(oldItem: Any, newItem: Any): Any? {
+                    if (oldItem is OneMoreModel1 && newItem is OneMoreModel1) {
+                        // 只返回改变的字段
+//                        if (oldItem.txt != newItem.txt) {
+//                            return newItem.txt
+//                        }
+                        if (oldItem != newItem) {
+                            return newItem
+                        }
+                    }
+                    return null
+                }
+            }
             onBind {
                 when (itemViewType) {
                     R.layout.item_one_more1 -> {
@@ -81,7 +95,16 @@ class OneMoreTypeFragment :
             }
 
             onPayload {
-
+                Log.i("onPayload",it.toString()+"type $itemViewType")
+                when (itemViewType) {
+                    else -> {
+                        getBinding<ItemOneMore3Binding>().apply {
+                            if (it.isNotEmpty()){
+                                item.text = (it[0]as OneMoreModel1).txt
+                            }
+                        }
+                    }
+                }
             }
 
 
@@ -97,12 +120,13 @@ class OneMoreTypeFragment :
 //            binding.rv.bindingAdapter.addFooter(OneMoreModel1(-2,2, "foot"))
 //        }
 
+
         binding.rv.run {
-//            val newList = list.toMutableList().apply {}
-//            newList.add(0, OneMoreModel1(-1, 1, "head"))
-//            newList.add(OneMoreModel1(-2, 2, "foot"))
-//            binding.rv.setDifferModels(newModels = newList)
-//            list = newList
+            val newList = list.toMutableList().apply {}
+            newList.add(0, OneMoreModel1(-1, 1, "head"))
+            newList.add(OneMoreModel1(-2, 2, "foot"))
+            binding.rv.setDifferModels(newModels = newList)
+            list = newList
         }
 
         binding.titleTv3.setOnClickListener {
@@ -152,6 +176,7 @@ class OneMoreTypeFragment :
         }
 
         binding.titleTv.setOnClickListener {
+            ids++
             val newList = list.toMutableList().apply {
                 //新增
                 // 检查列表是否至少有两个元素
@@ -164,7 +189,9 @@ class OneMoreTypeFragment :
                 }
 
             }
-            binding.rv.setDifferModels(newModels = newList)
+            binding.rv.setDifferModels(newModels = newList, commitCallback = {
+
+            })
             list = newList
 //            ADD()
         }
