@@ -26,12 +26,12 @@ class OneMoreTypeFragment :
     EngineFragment<FragmentOneMoreTypeBinding>(R.layout.fragment_one_more_type) {
     //在 Kotlin 中，如果属性的类型是一个类，并且该类有无参构造函数，那么在属性声明中可以省略括号 ().
     // var testItemDifferCallback: TestItemDifferCallback = TestItemDifferCallback()
-     // 等价于下面
+    // 等价于下面
     var testItemDifferCallback: TestItemDifferCallback = TestItemDifferCallback
     var list: MutableList<OneMoreModel1> = mutableListOf()
     override fun initView() {
         testItemDifferCallback.areItemsTheSame(1, 1)
-        repeat(2) {
+        repeat(6) {
             list.add(OneMoreModel1(it, 3, "-q--$it"))
         }
         binding.rv.grid(3).setup {
@@ -168,13 +168,22 @@ class OneMoreTypeFragment :
                 //todo 这种方式直接通过索引。但是需要注意头尾。
                 //this[0] = this[0].copy(txt = "改名后的小帅哥$ids")
                 //todo 这种方式是通过遍历id删除。但是需要注意头尾。
-                val b = filter { it.id == 0 }[0]
-                val i = indexOf(b)
-                this[i] = b.copy(txt = "改名后的小帅哥$ids")
+//                val b = filter { it.id == 0 }[0]
+//                val i = indexOf(b)
+//                this[i] = b.copy(txt = "改名后的小帅哥$ids")
+                //todo 如果不使用。onPayload，局部更新某个走onBind，还是会闪的。因为局部走onBing更新
+                // 走onPayload就不会，复用当前的bind.直接刷新
+                forEachIndexed { index, oneMoreModel1 ->
+                    if (index > 0 && index < size - 1) {
+                        this[index] = oneMoreModel1.copy(
+                            id = oneMoreModel1.id,
+                            type = oneMoreModel1.type, txt = "呜呜呜呜$index"
+                        )
+                    }
+                }
             }
             binding.rv.setDifferModels(newModels = newList)
             list = newList
-
         }
 
         binding.titleTv.setOnClickListener {
