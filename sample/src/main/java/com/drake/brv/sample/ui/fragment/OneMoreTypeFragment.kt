@@ -173,6 +173,7 @@ class OneMoreTypeFragment :
 //                this[i] = b.copy(txt = "改名后的小帅哥$ids")
                 //todo 如果不使用。onPayload，局部更新某个走onBind，还是会闪的。因为局部走onBing更新
                 // 走onPayload就不会，复用当前的bind.直接刷新
+                // 不论notifyItemChanged 还是 setDifferModels都一样，如果想不闪就走onPayload
                 forEachIndexed { index, oneMoreModel1 ->
                     if (index > 0 && index < size - 1) {
                         this[index] = oneMoreModel1.copy(
